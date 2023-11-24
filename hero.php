@@ -110,9 +110,9 @@ abstract class Hero
         $this->level = $level;
     }
 
-    public function subit(): void
+    public function subit(): string
     {
-        echo $this->name . " is attacked" . "<br>";
+        return $this->name . " is attacked";
     }
 
 
