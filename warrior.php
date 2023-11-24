@@ -28,12 +28,12 @@ final class Warrior extends Hero
     return $displayWarrior;
 }
 
-    public function attack($opponent)
-    {
-        $damage = $this->getDamage();
-        $opponent->setDamage($damage);
-        return "{$this->name} attacks {$opponent->getName()} and deals {$damage} points of damage.<br>";
-    }
+    // public function attack($opponent)
+    // {
+    //     $damage = $this->getDamage();
+    //     $opponent->setDamage($damage);
+    //     return "{$this->name} attacks {$opponent->getName()} and deals {$damage} points of damage.<br>";
+    // }
 
      public function updateStats()
     {
@@ -49,8 +49,8 @@ final class Warrior extends Hero
         return $this->baseHealth;
     }
 
-     public function getDamage(): int
-    {
-        return (int)($this->getBaseStrength() * 0.1);
-    }
+    //  public function getDamage(): int
+    // {
+    //     return (int)($this->getBaseStrength() * 0.1);
+    // }
 }

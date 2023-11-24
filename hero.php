@@ -38,14 +38,14 @@ abstract class Hero
         // Double the damage for a critical hit
         if ($isCriticalHit) {
             $damage *= 2;
-            echo "{$this->name} is angry and makes a critical hit! Damage doubled: ";
+            return "{$this->name} is angry and makes a critical hit! Damage doubled: ";
         }
 
         // Inflict the damage on the opponent
         $opponent->setDamage($damage);
 
         // Output the attack message
-        echo "{$this->name} attacks {$opponent->getName()} and deals {$damage} points of damage.<br>";
+        return "{$this->name} attacks {$opponent->getName()} and deals {$damage} points of damage.<br>";
     }
 
 

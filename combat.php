@@ -54,17 +54,17 @@ function simulateCombat($hero, $opponent)
     echo "<table border='1' style='table-layout: fixed; width: 100%;'>";
     echo "<tr><th>Round</th><th>Attacker</th><th>Defender</th><th>Attacker's Remaining Health</th><th>Defender's Remaining Health</th></tr>";
 
-    foreach ($combatResults as $roundResults) {
-        echo "<tr>";
-        foreach ($roundResults as $result) {
-            echo "<td style='word-wrap: break-word;'>$result</td>";
+        foreach ($combatResults as $roundResults) {
+            echo "<tr>";
+            foreach ($roundResults as $result) {
+                echo "<td style='word-wrap: break-word;'>$result</td>";
+            }
+            echo "</tr>";
         }
-        echo "</tr>";
-    }
 
-   echo "</table>";
+    echo "</table>";
 
-    var_dump($roundResults);
+    //var_dump($roundResults);
     echo "</table>";
    // Display the final result after combat
     echo "<b>Combat Results</b><br>";
