@@ -22,19 +22,11 @@ final class Warrior extends Hero
         $this->weapon = 'Sword';
     }
    public function display(): string
-{
-    $parentDisplay = parent::display();
-    $displayWarrior = $parentDisplay . $this->getName() . ' uses Weapon: ' . $this->weapon . "<br>";
-    return $displayWarrior;
-}
-
-    // public function attack($opponent)
-    // {
-    //     $damage = $this->getDamage();
-    //     $opponent->setDamage($damage);
-    //     return "{$this->name} attacks {$opponent->getName()} and deals {$damage} points of damage.<br>";
-    // }
-
+    {
+        $parentDisplay = parent::display();
+        $displayWarrior = $parentDisplay . $this->getName() . ' uses Weapon: ' . $this->weapon . "<br>";
+        return $displayWarrior;
+    }
      public function updateStats()
     {
         parent::updateStats();
@@ -43,14 +35,4 @@ final class Warrior extends Hero
         $this->baseHealth += 10 * $this->level;
     }
 
-    // Add a method to get remaining health
-    public function getRemainingHealth(): int
-    {
-        return $this->baseHealth;
-    }
-
-    //  public function getDamage(): int
-    // {
-    //     return (int)($this->getBaseStrength() * 0.1);
-    // }
 }

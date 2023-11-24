@@ -1,5 +1,6 @@
 <?php
-ob_start(); // Start output buffering
+ // Start output buffering
+ob_start();
 require_once 'Warrior.php';
 require_once 'Mage.php';
 
@@ -32,11 +33,10 @@ function simulateCombat($hero, $opponent)
         $defender->setDamage($damage);
 
         $roundResults[] = "Round $round";
-        //$roundResults[] = $defender->subit();
         $roundResults[] = $defender->subit();
         $roundResults[] = $attacker->attack($defender);
-        $roundResults[] = "{$hero->getName()}'s Remaining Health: {$hero->getRemainingHealth()}";
-        $roundResults[] = "{$opponent->getName()}'s Remaining Health: {$opponent->getRemainingHealth()}";
+        $roundResults[] = "{$hero->getName()}'s Remaining Health: {$hero->getBaseHealth()}";
+        $roundResults[] = "{$opponent->getName()}'s Remaining Health: {$opponent->getBaseHealth()}";
 
         // Store round results in the combat results array
         $combatResults[] = $roundResults;
@@ -67,11 +67,14 @@ function simulateCombat($hero, $opponent)
     //var_dump($roundResults);
     echo "</table>";
    // Display the final result after combat
-    echo "<b>Combat Results</b><br>";
+    echo '<div style="text-align: center; padding: 10px;">
+    <strong>Combat Results</strong>
+    </div>';
 
     displayResults($hero, $opponent);
      // Cookie valid for one day
-    setcookie('heroLevel', $hero->getLevel(), time() + 86400, "/");
+    setcookie('heroLevel', $hero->getLevel(), $opponent->getLevel(), time() + 86400, "/");
+    //echo $_COOKIE['heroLevel'];
 }
 
 
@@ -92,18 +95,41 @@ function displayResults($hero, $opponent)
     } else {
         echo "<p style='color: red;'>Your hero {$hero->getName()} lost.</p>";
         echo "<p style='color: green;'>Your opponent {$opponent->getName()} won.</p>";
+        echo "<p>{$opponent->getName()}'s final health: {$opponent->getBaseHealth()}</p>";
     }
 
-    // Check if the hero's level cookie exists
-    if (isset($_COOKIE['heroLevel'])) {
-        // Initialize the hero with the level from the cookie
-        // Convert to integer
-        $heroLevelFromCookie = intval($_COOKIE['heroLevel']);
-        $hero->setLevel($heroLevelFromCookie);
-        echo "<p>{$hero->getName()}'s level loaded from cookie: $heroLevelFromCookie</p>";
-    }
+/// Check if the hero's level cookie exists
+if (isset($_COOKIE['heroLevel'])) {
+    // Initialize the hero with the level from the cookie
+    // Convert to integer
+    $heroLevelFromCookie = intval($_COOKIE['heroLevel']);
+    $hero->setLevel($heroLevelFromCookie);
 
-    echo "</div>";
+    // Save the current level before updating stats
+    $currentLevel = $hero->getLevel();
+    echo "<p>{$hero->getName()}'s level loaded from cookie is: $heroLevelFromCookie</p>";
+
+    // Update stats only if the level hasn't been loaded from a cookie
+    if ($currentLevel == $heroLevelFromCookie) {
+        $hero->updateStats();
+
+        // Add the increment to the current level and set the cookie
+        $newLevel = $heroLevelFromCookie + 1;
+        setcookie('heroLevel', $newLevel, time() + 86400, "/");
+        echo "<p>{$hero->getName()}'s level set with the updated level: $newLevel</p>";
+    }
+} else {
+    // Update stats and display final health if the cookie doesn't exist
+    $hero->updateStats();
+
+    // Display additional information
+    echo "<p>{$hero->getName()}'s final health: {$hero->getBaseHealth()}</p>";
+}
+
+
+
+echo "</div>";
+
 }
 
 // Get selected hero and opponent types from the form or set defaults
@@ -114,24 +140,26 @@ $opponentType = isset($_POST['opponent']) ? $_POST['opponent'] : 'default';
 $hero = createHero($heroType);
 $opponent = createHero($opponentType);
 
-// Check if hero and opponent instances are created successfully
-if ($hero !== null && $opponent !== null) {
-    // Display hero and opponent details
-    $hero->display();
-    $opponent->display();
+    // Check if hero and opponent instances are created successfully
+    if ($hero !== null && $opponent !== null) {
+        
+        echo "<p><strong>{$hero->getName()}</strong> VS <strong>{$opponent->getName()}</strong></p>"  . PHP_EOL;
 
-    // Randomly determine the initial attacker and defender
-    $attacker = rand(0, 1) == 0 ? $hero : $opponent;
-    $defender = $attacker === $hero ? $opponent : $hero;
+        // Display hero and opponent details
+        $hero->display();
+        $opponent->display();
 
-    echo "<b> Combat Details</b><br>";
 
-    // Simulate combat
-    simulateCombat($attacker, $defender);
+        echo '<div style="text-align: center; padding: 10px;">
+        <strong>Combat Details</strong>
+        </div>';
 
-} else {
-    echo "Error creating hero or opponent.";
-}
+        // Simulate combat
+        simulateCombat($hero, $opponent);
+
+    } else {
+        echo "Error creating hero or opponent.";
+    }
 // Flush output
 ob_end_flush(); 
 ?>

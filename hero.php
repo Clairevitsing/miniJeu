@@ -53,23 +53,24 @@ abstract class Hero
     public function display(): string
     {
         $display = $this->name . ' strength: ' . $this->baseStrength. ' health:' . $this->baseHealth . ' defense:' . $this->defense;
-
-        // // Ajoutez la vérification pour ne pas afficher les valeurs de santé à zéro
-        // if ($this->baseHealth > 0) {
-        //     $display .= "<br>";
-        // } else {
-        //     $display .= "{$this->name} has no health left!<br>";
-        // }
         echo $display. "<br>";
         return $display;
     }
 
-   public function updateStats()
+    public function updateStats()
     {
+        // Save the current level before updating
+        $loadedLevel = $this->level;
+
         // Increase base strength and health based on the level.
         $this->baseStrength += 5 * $this->level;
         $this->baseHealth += 10 * $this->level;
+
+        // Always increase the level, regardless of whether it's loaded from a cookie
+        $this->level++;
+       
     }
+
 
 
     public function setDamage($damage)
@@ -84,15 +85,6 @@ abstract class Hero
         if ($this->baseHealth <= 0) $this->baseHealth = 0;
 
         return "{$this->name} takes {$damage} points of damage. Remaining health: {$this->baseHealth}<br>";
-    }
-
-    public function levelUp()
-    {
-        $this->level++;
-        //echo "{$this->name} has leveled up! New level: {$this->level}<br>";
-        $this->updateStats();
-        return "{$this->name} has leveled up! New level: {$this->level}<br>";
-
     }
 
     public function getLevel()

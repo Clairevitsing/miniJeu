@@ -10,7 +10,7 @@ final class Mage extends Hero
     {
         $baseStrength = (int)(20 * rand(90, 110) / 100);
         $baseHealth = (int)(180 * rand(90, 110) / 100);
-        $defense = (int)(20 * rand(90, 110) / 100);
+        $defense = (int)(18 * rand(90, 110) / 100);
 
         // Ensure that values are at least 1 to avoid 0 values
         $baseStrength = max($baseStrength, 1);
@@ -27,12 +27,6 @@ final class Mage extends Hero
         return $displayMage;
     }
 
-    // public function attack($opponent)
-    // {
-    //     $damage = $this->getDamage();
-    //     $opponent->setDamage($damage);
-    //     return "{$this->name} casts a spell on {$opponent->getName()} and deals {$damage} points of damage.<br>";
-    // }
 
      public function updateStats()
     {
@@ -43,15 +37,5 @@ final class Mage extends Hero
         $this->baseHealth += 10 * $this->level;
     }
 
-    // Add a method to get remaining health
-    public function getRemainingHealth(): int
-    {
-        return $this->baseHealth;
-    }
-
-    //  public function getDamage(): int
-    // {
-    //     return (int)($this->getBaseStrength() * 0.2);
-    // }
 }
 
